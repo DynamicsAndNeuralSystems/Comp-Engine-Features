@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+from decouple import config,Csv
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -23,13 +24,31 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 
-SECRET_KEY = 
+SECRET_KEY = config('SECRET_KEY') 
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-
+#Add Allowed host here
 ALLOWED_HOSTS = []
+
+
+
+CSRF_COOKIE_SECURE=True
+
+SECURE_SSL_REDIRECT=True
+
+SESSION_COOKIE_SECURE=True
+
+SECURE_HSTS_SECONDS=31526000
+
+SECURE_HSTS_INCLUDE_SUBDOMAINS=True
+
+SECURE_HSTS_PRELOAD=True
+
+SECURE_REFERRER_POLICY="strict-origin"
+
+SECURE_BROWSER_XSS_FILTER = True
 
 
 # Application definition
