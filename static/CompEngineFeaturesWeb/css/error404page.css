@@ -1,0 +1,72 @@
+body {
+  background-color: beige;
+}
+
+
+.l4 {
+  color: black;
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 11rem;
+  position:absolute;
+  left: 36%;
+  top: 12%;
+}
+
+
+.r4 {
+  color: black;
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 11rem;
+  position:absolute;
+  left: 60%;
+  top: 12%;
+}
+.fas {
+  position: absolute;
+  font-size: 8.5rem;
+  left: 48%;
+  top: 18%;
+  color: black;
+}
+
+.h3{
+    text-align: center;
+    font-size: 55px;
+    margin-top: 40%;
+}body {
+  background-color: beige;
+}
+
+
+.l4 {
+  color: black;
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 11rem;
+  position:absolute;
+  left: 36%;
+  top: 12%;
+}
+
+
+.r4 {
+  color: black;
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 11rem;
+  position:absolute;
+  left: 60%;
+  top: 12%;
+}
+.fas {
+  position: absolute;
+  font-size: 8.5rem;
+  left: 48%;
+  top: 18%;
+  color: black;
+}
+
+.display-4{
+    margin-top: 40%;
+    text-align: center;
+    font-size: 35px;
+    margin-top: 40%;
+}

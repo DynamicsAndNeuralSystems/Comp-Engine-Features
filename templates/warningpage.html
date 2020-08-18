@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{%static 'CompEngineFeaturesWeb\css\warningpage.css'%}">
+{% endblock head %}
+
+
+{% block body %}
+
+<div class="container">
+        <div class="splitsection">
+          <div class="left">
+            <img src="{%static 'CompEngineFeaturesWeb\img\86943-triangle-symbol-sign-content-weather-warning.png'%}">
+          </div>
+          <div class="right display-3" >Malacious code detected</div>
+        </div>
+        <div class="subheading">
+          
+          <p class="lead">
+            <strong> We suspect that you are trying to run a code that could harm our system.</strong></p></div>
+          <div class="instructions">
+            <div class="leftside">
+
+              <h3>Please re-check your code and make sure that:</h3>
+              <ul class="list-group">
+                <li class="list-group-item">Your code is not trying to modify/access the system resources.</li>
+                <li class="list-group-item">Does not use functions or import modules that are not allowed.</li>
+                <li class="list-group-item">Follows the structure as described <a href="/howitworks">here</a>.</li>
+              </ul>
+              <div class="notes">
+                <p class="lead"><strong>If still the problem persist <a href="/contact">Write us here </a>or raise issue on <a href="#">GitHub</a></strong></p>
+              </div>
+            </div>
+            <div class="rightside">
+              <img src="{%static 'CompEngineFeaturesWeb\img\IMGBIN_computer-worm-computer-virus-trojan-horse-malware-png_hWBkURUi.png'%}">
+            </div>
+        </div>
+        
+
+      </div>
+
+
+
+
+
+{% endblock body %}

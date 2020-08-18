@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+
+
+{% block head %}
+<script src="https://use.fontawesome.com/8ef3ce1ffd.js"></script>
+
+<link rel="stylesheet" type="text/css" href="{%static 'CompEngineFeaturesWeb\css\contact.css'%}">
+
+
+{% endblock head %}
+{%block title%}
+Comp-Engine-Features
+{%endblock title%}
+
+{% block body %}
+<div class="container">
+      <p class="display-1">Connect with us</h1>
+      <hr>
+      <p class="lead">Wants to get in touch ? We'd love to hear from you.<br>Here is how you can reach us. </p>
+      <div class="contact-box">
+
+        <div class="left">
+          <h3>Send your message</h3>
+
+          <form class="contact-form">
+          <div class="input-row">
+            <div class="input-group">
+              <label>Name</label>
+              <input type="text" placeholder="Name">
+            </div>
+
+      
+            <div class="input-group">
+              <label>E-mail</label>
+              <input type="email" placeholder="Email">
+            </div>
+          </div>        
+          
+        <label>Message</label>
+         <textarea rows="10" placeholder="Your message"></textarea>
+         <button class="formbutton"type="submit" >Send</button>
+        </form>
+        </div>
+        
+
+        <div class="right">
+
+          <h3>Reach Us</h3>
+          
+          
+      <ul>
+      <li> <a href=""><i class="fa fa-envelope"></i></a></li>
+      <li> <a href=""><i class="fa fa-github"></i></a></li>
+      </ul>
+      </div>
+
+
+      </div>
+      
+
+    </div>
+
+{% block JavaScript %}
+{% endblock JavaScript %}
+
+
+{% endblock body %}

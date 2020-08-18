@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% load static %}
+
+   
+
+{% block head%}
+
+<link rel="stylesheet" type="text/css" href="{%static 'CompEngineFeaturesWeb\css\result.css'%}">
+<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.17.1/dist/bootstrap-table.min.css">
+
+<style>
+{% comment %} This is style code is only download buttoon {% endcomment %}
+#toolbar{
+  margin : 0;
+}
+
+</style>
+
+{%endblock head%}
+
+{% block title %}Comp-engine{% endblock title %}
+
+{% block body %}
+
+<div class="container">
+
+<p class="display-2">Dashboard</p>
+<hr><br><br>
+<ul class="list-group">
+<li class="list-group-item d-flex justify-content-between align-items-center">
+    <b>Feature Name </b>
+    <span class="badge badge-primary badge-pill">{{featurename}}</span>
+  </li>
+ 
+
+  <li class="list-group-item d-flex justify-content-between align-items-center">
+    <b>Total Matches </b>
+    <span class="badge badge-primary badge-pill">{{totalmatches}}</span>
+  </li>
+ </ul>
+
+
+<div class="container mt-2 mb-2">
+<div id="toolbar" class="download button">
+<a class="btn btn-dark btn" href="{{'media\matching data.csv'}}" download="Best-matching-features">Download Results</a>
+
+</div>
+
+
+
+<table id="table"
+data-toolbar="#toolbar"
+data-toggle="table"
+data-pagination="true"
+data-show-toggle="true"
+data-show-columns="true"
+data-show-fullscreen="true"
+data-height="650"
+data-page-size="12"
+data-page-list="[12,25,50,100]">
+
+  <thead class="thead-dark">
+    <tr>
+      <th data-field="Rank">Rank</th>
+      <th data-field="Name">Name</th>
+      <th data-field="Keywords">Keywords</th>
+      <th data-field="Signedcorrvalue">Correlation</th>
+      <th data-field="pvalue">p-value</th>
+      <th data-field="Corr" data-visible="false">Absloute-value</th>
+    </tr>
+  </thead>
+  <tbody>
+        {% for i in data %}
+      <tr>
+          <td>{{i.Rank}}</td>
+          <td>{{i.Name}}</td>
+          <td>{{i.Keywords}}</td>
+          <td>{{i.Signedcorrvalue}}</td>
+          <td>{{i.pvalue}}</td>
+          <td>{{i.Corr}}</td>
+         
+      </tr>
+        {% endfor %}
+  </tbody>
+
+</table>
+
+</div>
+
+<div class="scatterinteractive">
+{% if graph %}
+{{ graph|safe }}
+{% else %}
+<p>No graph was provided.</p>
+{% endif %}
+</div>
+
+
+
+<img class="clustermap" src="data:image/png;base64,{{ clusterdata }}" alt="mydataplohere" height="850" ,width="850">
+</div>
+
+{%block JavaScript%}
+
+    <script src="https://unpkg.com/bootstrap-table@1.17.1/dist/bootstrap-table.min.js"></script>
+
+{%endblock JavaScript%}
+
+{% endblock body %}

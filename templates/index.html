@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{%block head%}
+
+<link rel="stylesheet" type="text/css" href="{%static 'CompEngineFeaturesWeb\css\index.css'%}">
+
+<style>
+
+{% comment %} This style codes are only for page loader. {% endcomment %}
+#pageloader
+{
+  background: rgb( 245, 245, 220);
+  display: none;
+  height: 100%;
+  position: fixed;
+  width: 100%;
+  z-index: 9999;
+}
+
+
+#pageloader img
+{
+  left: 50%;
+  margin-left: -32px;
+  margin-top: -25px;
+  position: fixed;
+  top: 50%;
+}
+#pageloader p {
+    margin-top: 18%;
+    text-align: center;
+}
+
+
+</style>
+
+
+{%endblock head%}
+
+
+{% block title %}
+comp-engine-features
+{% endblock title %}
+
+
+
+{% block body %}
+
+
+<div id="pageloader">
+<p class="display-4"><strong>This may take some time ! so sit back and relax</strong></P>
+<img src="{%static 'CompEngineFeaturesWeb\img\preloader.gif'%}">
+</div>
+
+<div class="alert alert-success alert-dismissible fade show message" role="alert">
+  <strong>Holy Welcome!</strong> Please check the <b>How it works</b> page to understand the python code structure .
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+
+
+
+<div class="container">
+<h1 class="display-1">Comp-Engine-Features</h1>
+<p class="lead">{% lorem 1 b%}</p>
+<div class="buttonssection">
+      <button type="button" class="btn btn-dark btn-lg" ><a href="/howitworks" >Learn More</a></button>
+      <button type="button" class="btn btn-dark btn-lg">  Explore </button>
+    </div>
+    <div class="containerfluid">
+    <div class="leftside">
+    <div class="image-control">
+         <img src={%static 'CompEngineFeaturesWeb\img\compengine-infographic.png'%} width="400px" height="400px">
+        </div>
+        </div>
+    <div class="rightside">
+    
+    <form id="myform" class="form-container" method="POST" enctype="multipart/form-data" action="/result" >
+          {% csrf_token %}
+          <div class="form-group">
+          <label for="exampleInputEmail1">Function Name</label>
+          <input type="text" class="form-control" id="exampleInputEmail1" name="featurename" aria-describedby="emailHelp" placeholder="Enter function name" required>
+          <small id="emailHelp" class="form-text text-muted">Function name should be same as defined in python file.</small>
+        </div>
+        
+        <div class="input-group mb-3">
+        <div class="custom-file">
+        <input type="file" class="custom-file-input" id="inputGroupFile02" name="featurecode" required>
+        <label class="custom-file-label" for="inputGroupFile02" aria-describedby="inputGroupFileAddon02">Upload your .py file here</label>
+  </div>
+</div>
+
+
+<button type="submit"value="submit" class="btn btn-primary ">Submit</button>
+      </form>
+    </div>
+    </div>
+
+</div>
+
+{%block JavaScript%}
+
+<script src="{%static 'CompEngineFeaturesWeb\js\index.js'%}"></script>
+
+<script>
+
+$(document).ready(function(){
+  $("#myform").on("submit", function(){
+    $("#pageloader").fadeIn();
+  });//submit
+});//document ready
+
+
+</script>
+
+
+{%endblock JavaScript%}
+
+
+
+
+{% endblock body %}
+
+
+
+
+
+{% comment %} {% endblock body %} {% endcomment %}
+
+
+

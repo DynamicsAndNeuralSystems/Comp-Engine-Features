@@ -1,0 +1,21 @@
+body{
+    background-color: beige;
+  }
+  
+  .container{
+    margin-top: 10%;
+    text-align: center;
+  }
+  
+  .lead{
+    font-size: 30px;
+  }
+
+a{
+      color: white;
+  }
+
+
+a:hover{
+  color: white;
+}

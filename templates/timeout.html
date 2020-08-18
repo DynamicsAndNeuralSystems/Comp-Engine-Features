@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{%static 'CompEngineFeaturesWeb\css\timeout.css'%}">
+{% endblock head %}
+
+
+{% block body %}
+
+<div class="container">
+        <p class="display-2">Timeout Error</p>
+        <hr>
+        <p class="lead">The process is terminated as your code is taking longer than normal time to execute.<br>Please re-check your code make sure it does not falls into infinite loop.</p>
+        <button type="button" class="btn btn-dark btn-lg"><a href="/">Go Back</a></button>
+      </div>
+      </div>
+
+{% endblock body %}

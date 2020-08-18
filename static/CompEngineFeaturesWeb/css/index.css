@@ -1,0 +1,91 @@
+
+body{
+    background-color: beige;
+} 
+.container{
+    margin-top: 8%;
+    background-color: beige;
+    text-align: center;
+    height: 100vh;
+    
+}
+
+
+.containerfluid{
+    padding-top: 100px;
+    background-color: beige;
+    height: 100vh;
+    display: inline-flex;
+    overflow-wrap: break-word;
+
+}
+
+
+
+.leftside{
+    background-color: beige;
+    width: 50%;
+    
+}
+.rightside{
+    background-color:beige;
+    width: 50%;
+}
+.form-container {
+    background: #fff;
+    padding: 30px;
+    width: 400px;
+    height: 400px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px 0px #000;
+    margin-left: 20%;
+    margin-bottom: 10%;
+}
+.lead{
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+
+.scatterimage{
+    margin-top: 8%;
+    margin-left: 20%;
+}
+
+
+.clustermap{
+    margin-top: 5%;
+    margin-left: 20%;
+}
+
+.display-1{
+font-weight: 350 ;
+}
+
+.message{
+    margin-bottom: 0px;
+}
+
+
+.custom-file{
+    margin-top:5%;
+}
+
+.form-group{
+    margin-top: 10%;
+    text-align: initial;
+}
+
+
+.custom-file-label{
+    text-align: initial;
+}
+
+.buttonssection a{
+    color: white;
+}
+
+
+
+
+
