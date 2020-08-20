@@ -11,6 +11,8 @@ import plotly.graph_objs as go
 
 # Create your views here.
 
+def error404page(request,exception):
+    return render(request,"error404page.html")
 
 
 def index(request):
