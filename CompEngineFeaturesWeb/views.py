@@ -365,7 +365,7 @@ def result(request):
 
             # adding correlation value as title for all 12 plots
 
-            fig=go.FigureWidget(make_subplots(rows=3,cols=4,y_title=f"<--------------------------------------{featurename}-------------------------------------->",subplot_titles=(f"Correlation = {BestMatches[0][2]}",f"Correlation = {BestMatches[1][2]}",f"Correlation = {BestMatches[2][2]}",f"Correlation = {BestMatches[3][2]}",f"Correlation = {BestMatches[4][2]}",
+            fig=go.FigureWidget(make_subplots(rows=3,cols=4,subplot_titles=(f"Correlation = {BestMatches[0][2]}",f"Correlation = {BestMatches[1][2]}",f"Correlation = {BestMatches[2][2]}",f"Correlation = {BestMatches[3][2]}",f"Correlation = {BestMatches[4][2]}",
             f"Correlation = {BestMatches[5][2]}",f"Correlation = {BestMatches[6][2]}",f"Correlation = {BestMatches[7][2]}",f"Correlation = {BestMatches[8][2]}",f"Correlation = {BestMatches[9][2]}",
             f"Correlation = {BestMatches[10][2]}",f"Correlation = {BestMatches[11][2]}")))
             fig.update_layout(template='plotly')
@@ -403,6 +403,11 @@ def result(request):
             fig.update_xaxes(title_text=BestMatches[9][0], row=3, col=2)
             fig.update_xaxes(title_text=BestMatches[10][0], row=3, col=3)
             fig.update_xaxes(title_text=BestMatches[11][0], row=3, col=4)
+
+
+            fig.update_yaxes(title_text=featurename,row=1,col=1)
+            fig.update_yaxes(title_text=featurename,row=2,col=1)
+            fig.update_yaxes(title_text=featurename,row=3,col=1)
 
 
 
