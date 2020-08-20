@@ -205,8 +205,7 @@ def result(request):
         #  For handling too many Nan values
 
             if int(pd.DataFrame(New_feature_vector).isna().sum())>50:
-                print("Too many Nan Values")
-                sys.exit()
+                raise SyntaxError
             
 
 
