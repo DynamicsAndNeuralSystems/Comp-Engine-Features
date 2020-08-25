@@ -29,7 +29,7 @@ urlpatterns = [
     path('',include('CompEngineFeaturesWeb.urls'))
 ]
 
-
+handler404="CompEngineFeaturesWeb.views.error404page"
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
