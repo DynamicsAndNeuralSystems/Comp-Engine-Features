@@ -3,6 +3,8 @@
 [![DOI](https://zenodo.org/badge/288501058.svg)](https://zenodo.org/badge/latestdoi/288501058)
 
 Comp-Engine-Features is a web platform that compares a user's time-series analysis algorithm (python) and compares its behavior to that of a library of >7000 existing algorithms from [hctsa](https://github.com/benfulcher/hctsa).
+
+See [CompEngine](https://www.comp-engine.org/) for an analogous living library of time-series data.
     
 ## To setup and run on localhost:
 1. Clone the repository.
