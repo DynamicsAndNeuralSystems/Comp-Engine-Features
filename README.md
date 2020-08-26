@@ -1,15 +1,8 @@
 # Comp-Engine-Features
 
+[![DOI](https://zenodo.org/badge/288501058.svg)](https://zenodo.org/badge/latestdoi/288501058)
 
-[Comp-Engine-Features]() is a web platform that takes time series analysis method coded in python as input, compares it with <7700+ features and presents the best matching features as output. It is similar attempt to what [HCTSA](https://github.com/benfulcher/hctsa) a matlab package do.
-
-
-#### For more information about all the 7700+ features and *hctsa*  please read the following publications:
-
-* B.D. Fulcher and N.S. Jones. [hctsa: A computational framework for automated time-series phenotyping using massive feature extraction.](https://www.cell.com/cell-systems/fulltext/S2405-4712%2817%2930438-6) Cell Systems 5, 527 (2017).
-
-* B.D. Fulcher, M.A. Little, N.S. Jones. [Highly comparative time-series analysis: the empirical structure of time series and their methods.](https://royalsocietypublishing.org/doi/full/10.1098/rsif.2013.0048) J. Roy. Soc. Interface 10, 20130048 (2013). 
-
+Comp-Engine-Features is a web platform that compares a user's time-series analysis algorithm (python) and compares its behavior to that of a library of >7000 existing algorithms from [hctsa](https://github.com/benfulcher/hctsa).
     
 ## To setup and run on localhost:
 1. Clone the repository.
