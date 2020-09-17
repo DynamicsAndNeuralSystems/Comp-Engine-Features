@@ -4,6 +4,7 @@ import io
 import urllib,base64
 from plotly.offline import plot
 import plotly.graph_objs as go
+import pandas as pd
 
 
 
@@ -30,6 +31,189 @@ def contact(request):
 
 def contribute(request):
     return render(request,'contribute.html')
+
+keywords = pd.read_csv('hctsa_features.csv')
+hctsa = pd.read_csv('hctsa_datamatrix.csv')
+
+def explore(request):
+    alldata=[]
+    for i in range(keywords.shape[0]):
+        alldata.append(dict(keywords.loc[i]))
+
+    context={'data':alldata}
+
+    return render(request,"explore.html",context)
+
+def exploremode(request,number,fname):
+    # import pandas as pd
+    from tqdm import tqdm
+    from scipy.stats import spearmanr
+    import seaborn as sns
+    import matplotlib.pyplot as plt
+    plt.switch_backend('agg')
+    from matplotlib.patches import Rectangle
+    from operator import itemgetter
+    import numpy as np
+    import warnings
+   
+
+    warnings.filterwarnings("ignore",category=RuntimeWarning)
+    warnings.filterwarnings("ignore",category=UserWarning)
+
+    alpha=0.05
+    New_Feature_vector_dataframe=hctsa.iloc[:,int(number)-1] 
+    print(New_Feature_vector_dataframe)
+    correlatedfeatures=[]
+
+    for i in tqdm(range(hctsa.shape[1])):
+        eachfeature=[]
+        if (hctsa.iloc[:,i].isna().sum())<50:
+            coef, p = spearmanr(hctsa.iloc[:,i],New_Feature_vector_dataframe.values,nan_policy="omit")
+            if p < alpha:
+                eachfeature=[hctsa.columns[i],p,format(abs(coef),'.3f'),i,*keywords.iloc[i:i+1,2].values,format(coef,'.3f'),*keywords.iloc[i:i+1,0].values]
+                correlatedfeatures.append(eachfeature)
+    BestMatches = sorted(correlatedfeatures, key=itemgetter(2))[::-1]
+
+    totalmatches=len(BestMatches)
+
+    pd.set_option('display.max_columns', None)
+    pd.set_option('display.max_rows', None)
+    DATAFRAME = pd.DataFrame(BestMatches)
+    DATAFRAME.columns = ['Name', 'pvalue', 'Corr', 'ColumnId', 'Keywords', 'Signedcorrvalue',"ID"]
+    DATAFRAME['Rank']=np.arange(1,len(BestMatches)+1)
+    myfulljsondata=DATAFRAME[:100]
+    jsontable=[]
+
+    for i in tqdm(range(myfulljsondata.shape[0])):
+        temp=myfulljsondata.iloc[i]
+        jsontable.append(dict(temp))
+
+
+    DATAFRAME=DATAFRAME[['Rank','Name','Keywords','Corr','pvalue','Signedcorrvalue',"ID"]]
+    DATAFRAME.to_csv('media/matching data.csv',index=False)
+
+    PairWise=pd.DataFrame()
+
+    featurename=fname
+    PairWise[featurename]=New_Feature_vector_dataframe.values
+
+    for i in range(len(BestMatches[:12])):
+        PairWise[BestMatches[i][0]] = hctsa.iloc[:, BestMatches[i][3]]
+    
+    pairwise_corr=PairWise.corr(method="spearman").abs()
+
+    g=sns.clustermap(pairwise_corr,method="complete",annot=True,linewidth=0.5,square=True)
+
+
+    columns = list(PairWise.columns)
+
+    N = len(columns)
+    wanted_label = featurename
+    wanted_row = g.dendrogram_row.reordered_ind.index(columns.index(wanted_label))
+    wanted_col = g.dendrogram_col.reordered_ind.index(columns.index(wanted_label))
+
+    xywh_row = (0, wanted_row, N, 1)
+    xywh_col = (wanted_col, 0, 1, N)
+    for x, y, w, h in (xywh_row, xywh_col):
+        g.ax_heatmap.add_patch(Rectangle((x, y), w, h, fill=False, edgecolor='Blue', lw=4, clip_on=True))
+    g.ax_heatmap.tick_params(length=0)
+    myfig=plt.gcf()
+    buf=io.BytesIO()
+    myfig.savefig(buf,format='png')
+
+
+    buf.seek(0)
+
+    string=base64.b64encode(buf.read())
+
+    uri=urllib.parse.quote(string)
+    import plotly.graph_objs as go
+    from plotly.tools import make_subplots
+    
+    Scatterdataframe=pd.DataFrame()
+
+    for i in range(12):
+        Scatterdataframe[i]=hctsa.iloc[:,BestMatches[i][3]]
+
+    Scatterdataframe[13]=New_Feature_vector_dataframe
+
+    trace0 = go.Scatter(x=Scatterdataframe.iloc[:,0].rank(), y=Scatterdataframe[13].rank(),mode="markers")
+    trace1 = go.Scatter(x=Scatterdataframe.iloc[:,1].rank(), y=Scatterdataframe[13].rank(),mode="markers")
+    trace2 = go.Scatter(x=Scatterdataframe.iloc[:,2].rank(), y=Scatterdataframe[13].rank(),mode="markers")
+    trace3 = go.Scatter(x=Scatterdataframe.iloc[:,3].rank(), y=Scatterdataframe[13].rank(),mode="markers")
+    trace4 = go.Scatter(x=Scatterdataframe.iloc[:,4].rank(), y=Scatterdataframe[13].rank(),mode="markers")
+    trace5 = go.Scatter(x=Scatterdataframe.iloc[:,5].rank(), y=Scatterdataframe[13].rank(),mode="markers")
+    trace6 = go.Scatter(x=Scatterdataframe.iloc[:,6].rank(), y=Scatterdataframe[13].rank(),mode="markers")
+    trace7 = go.Scatter(x=Scatterdataframe.iloc[:,7].rank(), y=Scatterdataframe[13].rank(),mode="markers")
+    trace8 = go.Scatter(x=Scatterdataframe.iloc[:,8].rank(), y=Scatterdataframe[13].rank(),mode="markers")
+    trace9 = go.Scatter(x=Scatterdataframe.iloc[:,9].rank(), y=Scatterdataframe[13].rank(),mode="markers")
+    trace10 = go.Scatter(x=Scatterdataframe.iloc[:,10].rank(), y=Scatterdataframe[13].rank(),mode="markers")
+    trace11 = go.Scatter(x=Scatterdataframe.iloc[:,11].rank(), y=Scatterdataframe[13].rank(),mode="markers")
+
+    fig=go.FigureWidget(make_subplots(rows=3,cols=4,subplot_titles=(f"Correlation = {BestMatches[0][2]}",f"Correlation = {BestMatches[1][2]}",f"Correlation = {BestMatches[2][2]}",f"Correlation = {BestMatches[3][2]}",f"Correlation = {BestMatches[4][2]}",
+    f"Correlation = {BestMatches[5][2]}",f"Correlation = {BestMatches[6][2]}",f"Correlation = {BestMatches[7][2]}",f"Correlation = {BestMatches[8][2]}",f"Correlation = {BestMatches[9][2]}",
+    f"Correlation = {BestMatches[10][2]}",f"Correlation = {BestMatches[11][2]}")))
+    fig.update_layout(template='plotly')
+
+
+    
+    fig.add_trace(trace0,1,1)
+    fig.add_trace(trace1,1,2)
+    fig.add_trace(trace2,1,3)
+    fig.add_trace(trace3,1,4)
+    fig.add_trace(trace4,2,1)
+    fig.add_trace(trace5,2,2)
+    fig.add_trace(trace6,2,3)
+    fig.add_trace(trace7,2,4)
+    fig.add_trace(trace8,3,1)
+    fig.add_trace(trace9,3,2)
+    fig.add_trace(trace10,3,3)
+    fig.add_trace(trace11,3,4)
+
+
+
+    fig.update_xaxes(title_text=BestMatches[0][0], row=1, col=1)
+    fig.update_xaxes(title_text=BestMatches[1][0], row=1, col=2)
+    fig.update_xaxes(title_text=BestMatches[2][0], row=1, col=3)
+    fig.update_xaxes(title_text=BestMatches[3][0], row=1, col=4)
+    fig.update_xaxes(title_text=BestMatches[4][0], row=2, col=1)
+    fig.update_xaxes(title_text=BestMatches[5][0], row=2, col=2)
+    fig.update_xaxes(title_text=BestMatches[6][0], row=2, col=3)
+    fig.update_xaxes(title_text=BestMatches[7][0], row=2, col=4)
+    fig.update_xaxes(title_text=BestMatches[8][0], row=3, col=1)
+    fig.update_xaxes(title_text=BestMatches[9][0], row=3, col=2)
+    fig.update_xaxes(title_text=BestMatches[10][0], row=3, col=3)
+    fig.update_xaxes(title_text=BestMatches[11][0], row=3, col=4)
+
+
+    fig.update_yaxes(title_text=featurename,row=1,col=1)
+    fig.update_yaxes(title_text=featurename,row=2,col=1)
+    fig.update_yaxes(title_text=featurename,row=3,col=1)
+
+    fig.update_layout(showlegend=False,template='ggplot2',paper_bgcolor='rgba(0,0,0,0)',
+    margin=dict(
+    r=130
+    ))
+
+
+    graph = fig.to_html(full_html=False, default_height=1200, default_width=1200)
+
+    context = {
+        "clusterdata":uri,
+        "data":jsontable,
+        'graph': graph,
+        "totalmatches":totalmatches,
+        "featurename":featurename
+            }
+
+
+    return render(request,"result.html",context)
+
+
+
+
+
+
 
 
 
