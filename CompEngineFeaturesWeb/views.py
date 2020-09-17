@@ -46,6 +46,7 @@ def result(request):
     import seaborn as sns
     import sys
     import matplotlib.pyplot as plt
+    plt.switch_backend('agg')
     from matplotlib.patches import Rectangle
     import numpy as np
     from RestrictedPython import safe_builtins, compile_restricted
