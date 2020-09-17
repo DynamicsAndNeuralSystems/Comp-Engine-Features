@@ -16,11 +16,46 @@
 
 </style>
 
+
+<style>
+
+{% comment %} This style codes are only for page loader. {% endcomment %}
+#pageloader
+{
+  background: rgb( 245, 245, 220);
+  display: none;
+  height: 100%;
+  position: fixed;
+  width: 100%;
+  z-index: 9999;
+}
+
+
+#pageloader img
+{
+  left: 50%;
+  margin-left: -32px;
+  margin-top: -25px;
+  position: fixed;
+  top: 50%;
+}
+#pageloader p {
+    margin-top: 18%;
+    text-align: center;
+}
+
+
+</style>
+
 {%endblock head%}
 
 {% block title %}Comp-engine{% endblock title %}
 
 {% block body %}
+<div id="pageloader">
+<p class="display-4"><strong>This may take some time so sit back and relax.</strong></P>
+<img src="{%static 'CompEngineFeaturesWeb\img\preloader.gif'%}"></div>
+
 
 <div class="container">
 
@@ -73,7 +108,7 @@ data-page-list="[12,25,50,100]">
         {% for i in data %}
       <tr>
           <td>{{i.Rank}}</td>
-          <td>{{i.Name}}</td>
+          <td><a class="explorelink" href="/exploremode/{{i.ID}}/{{i.Name}}">{{i.Name}}</a></td>
           <td>{{i.Keywords}}</td>
           <td>{{i.Signedcorrvalue}}</td>
           <td>{{i.pvalue}}</td>
@@ -103,6 +138,15 @@ data-page-list="[12,25,50,100]">
 {%block JavaScript%}
 
     <script src="https://unpkg.com/bootstrap-table@1.17.1/dist/bootstrap-table.min.js"></script>
+    <script>
+
+$(function(){
+  $('a.explorelink').click(function(){
+    $("#pageloader").fadeIn();
+  });
+});
+
+</script>
 
 {%endblock JavaScript%}
 
