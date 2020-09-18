@@ -1,10 +1,10 @@
 
 body{
-    background-color: beige;
+    background-color: white;
 } 
 .container{
     margin-top: 8%;
-    background-color: beige;
+    background-color: white;
     text-align: center;
     height: 100vh;
     
@@ -13,7 +13,7 @@ body{
 
 .containerfluid{
     padding-top: 100px;
-    background-color: beige;
+    background-color: white;
     height: 100vh;
     display: inline-flex;
     overflow-wrap: break-word;
@@ -23,12 +23,12 @@ body{
 
 
 .leftside{
-    background-color: beige;
+    background-color: white;
     width: 50%;
     
 }
 .rightside{
-    background-color:beige;
+    background-color:white;
     width: 50%;
 }
 .form-container {
