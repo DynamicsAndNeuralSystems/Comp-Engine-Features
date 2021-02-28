@@ -291,7 +291,7 @@ def result(request):
             return MaxCountIter(ob, MAX_ITER_LEN)
 
 
-        def execute_user_code(user_code, user_func, *args, **kwargs):
+        def execute_user_code(byte_code, *args, **kwargs):
             def _apply(f, *a, **kw):
                 return f(*a, **kw)
             
@@ -325,10 +325,7 @@ def result(request):
                 }
 
 
-                user_code += "\nresult = {0}(*args, **kwargs)".format(user_func)
-
-
-                byte_code = compile_restricted(user_code, filename="<user_code>", mode="exec")
+                
 
 
                 exec(byte_code, restricted_globals, restricted_locals)
@@ -372,8 +369,11 @@ def result(request):
         from func_timeout import func_timeout,FunctionTimedOut
 
         def Execute_User_Code():
+            user_code = usercode
+            user_code += "\nresult = {0}(*args, **kwargs)".format(featurename)
+            byte_code = compile_restricted(user_code, filename="<user_code>", mode="exec")
             for i in tqdm(range(len(Alltimeseries))):
-                featurevalue = execute_user_code(usercode, featurename, Alltimeseries[i])
+                featurevalue = execute_user_code(byte_code, Alltimeseries[i])
                 New_feature_vector.append(featurevalue)
 
 
