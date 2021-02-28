@@ -128,7 +128,7 @@ def exploremode(request,number,fname):
 
     uri=urllib.parse.quote(string)
     import plotly.graph_objs as go
-    from plotly.tools import make_subplots
+    from plotly.subplots import make_subplots
     
     Scatterdataframe=pd.DataFrame()
 
@@ -522,7 +522,7 @@ def result(request):
 
             import plotly.graph_objs as go
             
-            from plotly.tools import make_subplots
+            from plotly.subplots import make_subplots
 
          
             Scatterdataframe=pd.DataFrame()
