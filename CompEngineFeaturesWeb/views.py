@@ -5,12 +5,22 @@ import urllib,base64
 from plotly.offline import plot
 import plotly.graph_objs as go
 import pandas as pd
+import csv
 
 
 
 
 
 # Create your views here.
+def exporter(request,number,fname):
+    data = pd.read_csv('media/matching data.csv')
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="results.csv"'
+    writer = csv.writer(response)
+    writer.writerow(data.columns)
+    for i in range(len(data)):
+        writer.writerow(data.iloc[i])
+    return response
 
 def error404page(request,exception):
     return render(request,"error404page.html")
