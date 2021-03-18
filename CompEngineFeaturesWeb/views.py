@@ -6,6 +6,7 @@ from plotly.offline import plot
 import plotly.graph_objs as go
 import pandas as pd
 import csv
+from collections import OrderedDict 
 
 
 
@@ -44,6 +45,8 @@ def contribute(request):
 
 keywords = pd.read_csv('hctsa_features.csv')
 hctsa = pd.read_csv('hctsa_datamatrix.csv')
+buffer = OrderedDict()
+BUFFER_LIMIT = 2           #Set buffer limit
 
 def explore(request):
     alldata=[]
@@ -74,15 +77,23 @@ def exploremode(request,number,fname):
     New_Feature_vector_dataframe=hctsa.iloc[:,int(number)-1] 
     print(New_Feature_vector_dataframe)
     correlatedfeatures=[]
-
-    for i in tqdm(range(hctsa.shape[1])):
-        eachfeature=[]
-        if (hctsa.iloc[:,i].isna().sum())<50:
-            coef, p = spearmanr(hctsa.iloc[:,i],New_Feature_vector_dataframe.values,nan_policy="omit")
-            if p < alpha:
-                eachfeature=[hctsa.columns[i],p,format(abs(coef),'.3f'),i,*keywords.iloc[i:i+1,2].values,format(coef,'.3f'),*keywords.iloc[i:i+1,0].values]
-                correlatedfeatures.append(eachfeature)
-    BestMatches = sorted(correlatedfeatures, key=itemgetter(2))[::-1]
+    BestMatches = 0
+    if fname in buffer.keys():
+        BestMatches = buffer[fname]
+        buffer.pop(fname)
+        buffer[fname] = BestMatches
+    else:
+        for i in tqdm(range(hctsa.shape[1])):
+            eachfeature=[]
+            if (hctsa.iloc[:,i].isna().sum())<50:
+                coef, p = spearmanr(hctsa.iloc[:,i],New_Feature_vector_dataframe.values,nan_policy="omit")
+                if p < alpha:
+                    eachfeature=[hctsa.columns[i],p,format(abs(coef),'.3f'),i,*keywords.iloc[i:i+1,2].values,format(coef,'.3f'),*keywords.iloc[i:i+1,0].values]
+                    correlatedfeatures.append(eachfeature)
+        BestMatches = sorted(correlatedfeatures, key=itemgetter(2))[::-1]
+        if(len(buffer.keys())>BUFFER_LIMIT-1):
+            buffer.pop(list(buffer.keys())[0])
+        buffer[fname] = BestMatches
 
     totalmatches=len(BestMatches)
 
