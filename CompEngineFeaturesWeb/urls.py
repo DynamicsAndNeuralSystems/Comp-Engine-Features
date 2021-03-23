@@ -10,6 +10,7 @@ urlpatterns = [
     path('howitworks', views.howitworks,name='howitworks'),
     path('result',views.result,name='result'),
     path('explore',views.explore,name='explore'),
+    path('exploremode/<number>/<fname>/download',views.exporter,name="exporter"),
     path('exploremode/<number>/<fname>',views.exploremode,name="exploremode")
     
 ]

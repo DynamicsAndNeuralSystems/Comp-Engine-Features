@@ -5,12 +5,23 @@ import urllib,base64
 from plotly.offline import plot
 import plotly.graph_objs as go
 import pandas as pd
+import csv
+from collections import OrderedDict 
 
 
 
 
 
 # Create your views here.
+def exporter(request,number,fname):
+    data = pd.read_csv('media/matching data.csv')
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="results.csv"'
+    writer = csv.writer(response)
+    writer.writerow(data.columns)
+    for i in range(len(data)):
+        writer.writerow(data.iloc[i])
+    return response
 
 def error404page(request,exception):
     return render(request,"error404page.html")
@@ -34,6 +45,8 @@ def contribute(request):
 
 keywords = pd.read_csv('hctsa_features.csv')
 hctsa = pd.read_csv('hctsa_datamatrix.csv')
+buffer = OrderedDict()
+BUFFER_LIMIT = 2           #Set buffer limit
 
 def explore(request):
     alldata=[]
@@ -64,15 +77,23 @@ def exploremode(request,number,fname):
     New_Feature_vector_dataframe=hctsa.iloc[:,int(number)-1] 
     print(New_Feature_vector_dataframe)
     correlatedfeatures=[]
-
-    for i in tqdm(range(hctsa.shape[1])):
-        eachfeature=[]
-        if (hctsa.iloc[:,i].isna().sum())<50:
-            coef, p = spearmanr(hctsa.iloc[:,i],New_Feature_vector_dataframe.values,nan_policy="omit")
-            if p < alpha:
-                eachfeature=[hctsa.columns[i],p,format(abs(coef),'.3f'),i,*keywords.iloc[i:i+1,2].values,format(coef,'.3f'),*keywords.iloc[i:i+1,0].values]
-                correlatedfeatures.append(eachfeature)
-    BestMatches = sorted(correlatedfeatures, key=itemgetter(2))[::-1]
+    BestMatches = 0
+    if fname in buffer.keys():
+        BestMatches = buffer[fname]
+        buffer.pop(fname)
+        buffer[fname] = BestMatches
+    else:
+        for i in tqdm(range(hctsa.shape[1])):
+            eachfeature=[]
+            if (hctsa.iloc[:,i].isna().sum())<50:
+                coef, p = spearmanr(hctsa.iloc[:,i],New_Feature_vector_dataframe.values,nan_policy="omit")
+                if p < alpha:
+                    eachfeature=[hctsa.columns[i],p,format(abs(coef),'.3f'),i,*keywords.iloc[i:i+1,2].values,format(coef,'.3f'),*keywords.iloc[i:i+1,0].values]
+                    correlatedfeatures.append(eachfeature)
+        BestMatches = sorted(correlatedfeatures, key=itemgetter(2))[::-1]
+        if(len(buffer.keys())>BUFFER_LIMIT-1):
+            buffer.pop(list(buffer.keys())[0])
+        buffer[fname] = BestMatches
 
     totalmatches=len(BestMatches)
 
@@ -128,7 +149,7 @@ def exploremode(request,number,fname):
 
     uri=urllib.parse.quote(string)
     import plotly.graph_objs as go
-    from plotly.tools import make_subplots
+    from plotly.subplots import make_subplots
     
     Scatterdataframe=pd.DataFrame()
 
@@ -291,7 +312,7 @@ def result(request):
             return MaxCountIter(ob, MAX_ITER_LEN)
 
 
-        def execute_user_code(user_code, user_func, *args, **kwargs):
+        def execute_user_code(byte_code, *args, **kwargs):
             def _apply(f, *a, **kw):
                 return f(*a, **kw)
             
@@ -325,10 +346,7 @@ def result(request):
                 }
 
 
-                user_code += "\nresult = {0}(*args, **kwargs)".format(user_func)
-
-
-                byte_code = compile_restricted(user_code, filename="<user_code>", mode="exec")
+                
 
 
                 exec(byte_code, restricted_globals, restricted_locals)
@@ -372,8 +390,11 @@ def result(request):
         from func_timeout import func_timeout,FunctionTimedOut
 
         def Execute_User_Code():
+            user_code = usercode
+            user_code += "\nresult = {0}(*args, **kwargs)".format(featurename)
+            byte_code = compile_restricted(user_code, filename="<user_code>", mode="exec")
             for i in tqdm(range(len(Alltimeseries))):
-                featurevalue = execute_user_code(usercode, featurename, Alltimeseries[i])
+                featurevalue = execute_user_code(byte_code, Alltimeseries[i])
                 New_feature_vector.append(featurevalue)
 
 
@@ -522,7 +543,7 @@ def result(request):
 
             import plotly.graph_objs as go
             
-            from plotly.tools import make_subplots
+            from plotly.subplots import make_subplots
 
          
             Scatterdataframe=pd.DataFrame()
