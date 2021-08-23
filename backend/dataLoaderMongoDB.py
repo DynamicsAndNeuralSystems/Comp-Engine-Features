@@ -51,6 +51,7 @@ def addFeaturesCollection():
     print("Total features :", total)
     coefarr = [[0 for j in range(total)] for i in range(total)]
     pvalarr = [[0 for j in range(total)] for i in range(total)]
+    count = 0
     for i in range(total):
         print(i)
         dic = {
@@ -67,10 +68,11 @@ def addFeaturesCollection():
         if codeString in inpMopsDic:
             dic["codefile"] = inpMopsDic[codeString]
         else:
-            print("NA detected")
-            print(hctsaFeatures['CodeString'][i], " ", i)
+            count += 1
         if dic["codefile"] in codeFileDescDic:
             dic["description"] = codeFileDescDic[dic["codefile"]]
+        else:
+            count += 1
         coefList = []
         pval = []
         for j in range(total):
@@ -81,7 +83,7 @@ def addFeaturesCollection():
                 coefList.append(coefarr[j][i])
                 pval.append(pvalarr[j][i])
             else:
-                coef, p = 0, 0
+                coef, p = 0, 1
                 try:
                     if (hctsaDataMatrix.iloc[:, j].isna().sum() + hctsaDataMatrix.iloc[:, i].isna().sum()) < 50:
                         coef, p = spearmanr(hctsaDataMatrix.iloc[:, j], hctsaDataMatrix.iloc[:, i], nan_policy="omit")
@@ -89,7 +91,7 @@ def addFeaturesCollection():
                     print("Exception  : ", e, "  |    j-value : ", )
                 finally:
                     if math.isnan(coef):
-                        coef, p = 0, 0
+                        coef, p = 0, 1
                     coefList.append(float(format(coef, '.3f')))
                     pval.append(float(format(p, '.3f')))
                 coefarr[i][j] = float(format(coef, '.3f'))
@@ -99,6 +101,7 @@ def addFeaturesCollection():
         mycol.insert_one(dic)
     resp = mycol.create_index([("id", 1)])
     print("index response:", resp)
+    print("Non-matching codeString/codeFile:", count)
 
 
 def addTimeSeriesCollection():
