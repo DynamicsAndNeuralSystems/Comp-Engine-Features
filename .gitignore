@@ -1,0 +1,15 @@
+# Virtual Env
+/backend/venv
+
+# dependencies
+/frontend/node_modules
+
+# production
+/frontend/build
+
+/frontend/.idea
+/backend/.idea
+/backend/CompEngineFeaturesWeb/__pycache__
+/backend/CompEngineFeaturesProject/__pycache__
+
+
